@@ -12,3 +12,10 @@ export const createHeroComponent = () => {
 		payload
 	}	
 };
+
+export const changeComponentField = payload => {
+	return {
+		type: CHANGE_COMPONENT_FIELD,
+		payload
+	};
+};

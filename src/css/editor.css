@@ -1,0 +1,10 @@
+.editor {
+	width: 400px;
+  position: fixed;
+  right: 0;
+  top: 0;
+  background: #2A2F3A;
+  -webkit-font-smoothing: antialiased;
+  color: #FFFFFF;
+  z-index: 1;
+}

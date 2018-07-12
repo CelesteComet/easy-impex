@@ -1,14 +1,19 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
+
+// CSS stuff, put into LESS files later
 import './App.css';
+import './css/editor.css';
 
 import { connect } from 'react-redux';
 
 // actions
 import { createHeroComponent } from './actions/componentActions';
+import { changeCurrentComponent } from './actions/componentNavigatorActions';
 
 // components
 import HeroComponent from './components/HeroComponent';
+import EditorComponent from './components/EditorComponent';
 
 class App extends Component {
 
@@ -34,12 +39,11 @@ class App extends Component {
   }
 
   render() {
-    const { components } = this.props;
+    console.log("RERENDERING")
+    const { components, currentComponentUID } = this.props;
+    console.log(components)
     return (
       <div className="App">
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
         <ul>
           <li draggable onDragStart={ e => { this.drag(e) }}>HeroComponent</li>
           <li draggable onDragStart={ e => { this.drag(e) }}>QuoteComponent</li>
@@ -47,13 +51,16 @@ class App extends Component {
         <div className="drop-zone" onDrop={ e => { this.onDropZoneDrop(e) }} onDragOver={ this.allowDrop }>
           Drop Things Here 
         </div>
-        <ul>
-          { Object.values(components).map(c => {
-            if (c._type === 'HeroComponent') {
-              return <HeroComponent data={ c } />
-            }
-          })}
-        </ul>
+        { currentComponentUID && <EditorComponent data={ components[currentComponentUID] } /> }
+        <div id="page">
+          <div id="content">
+              { Object.values(components).map((c) => {
+                if (c._type === 'HeroComponent') {
+                  return <HeroComponent data={ c } key={c.uid}/>
+                }
+              })}
+          </div>
+        </div>
       </div>
     );
   }
@@ -61,14 +68,18 @@ class App extends Component {
 
 const mapStateToProps = state => {
   return {
-    components: state.components
+    components: state.components,
+    currentComponentUID: state.navigator.componentUID
   };
 }
 
 const mapDispatchToProps = dispatch => {
   return {
     createHeroComponent: () => {
-      dispatch(createHeroComponent());
+      const createHeroComponentAction = createHeroComponent();
+      const { type, payload } = createHeroComponentAction;
+      dispatch(createHeroComponentAction)
+      dispatch(changeCurrentComponent(payload.uid));
     } 
   };
 }

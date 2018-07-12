@@ -11,7 +11,8 @@ class HeroComponentModel {
 		this.textStyle 				= "LIGHT";
 		this.primaryCTALink   = null;
 		this.secondaryCTALink = null; 
-		this.VideoCTALink			= null;
+		this.videoCTALink			= null;
+		this.renderVideoIcon  = true;
 		this.text 						= "lorem ipsum";
 	}
 }

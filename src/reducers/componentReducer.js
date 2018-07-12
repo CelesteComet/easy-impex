@@ -1,5 +1,8 @@
 
-import { CREATE_HERO_COMPONENT } from '../actions/componentActions';
+import { 
+	CREATE_HERO_COMPONENT,
+	CHANGE_COMPONENT_FIELD
+} from '../actions/componentActions';
 
 const initialState = {};
 
@@ -9,7 +12,11 @@ const componentReducer = (state = initialState, action) => {
 		case CREATE_HERO_COMPONENT:
 			newState[action.payload.uid] = action.payload;
 			return newState;
-			break
+			break;
+		case CHANGE_COMPONENT_FIELD:
+			newState[action.payload.uid][action.payload.key] = action.payload.value;
+			return newState;
+			break			
 		default:
 			return newState;
 	}
