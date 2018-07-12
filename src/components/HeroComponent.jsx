@@ -103,11 +103,11 @@ class HeroComponent extends Component {
 				</div>
 
 		    <div className="container-fluid c-hero__after single-video visible-mobile no-bleed">
-		        <h2 className="video-title">${title}</h2>
+		        <h2 className="video-title">{title}</h2>
 		    </div>
 
 		    <div className="container-fluid c-hero__after hero-description visible-mobile no-bleed">
-		        <p>${text}</p>
+		        <p>{text}</p>
 		    </div>
 			</div>
 		);
@@ -129,8 +129,6 @@ const mapDispatchToProps = dispatch => {
 	}
 }
 const MutatedHeroComponent = HOCBaseComponent(HeroComponent);
-console.log(MutatedHeroComponent)
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(MutatedHeroComponent);
 

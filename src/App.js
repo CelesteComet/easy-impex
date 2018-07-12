@@ -10,12 +10,13 @@ import './App.css';
 import { connect } from 'react-redux';
 
 // actions
-import { createHeroComponent } from './actions/componentActions';
+import { createHeroComponent, createStoryTextComponent } from './actions/componentActions';
 import { changeSelectedComponent } from './actions/componentNavigatorActions';
 
 // components
 import HeroComponent from './components/HeroComponent';
 import EditorComponent from './components/EditorComponent';
+import StoryTextComponent from './components/StoryTextComponent';
 
 class App extends Component {
 
@@ -27,9 +28,13 @@ class App extends Component {
   }
 
   onDropZoneDrop(e) {
-    const data = e.dataTransfer.getData("text");
-    const { createHeroComponent } = this.props;
-    createHeroComponent();
+    const componentType = e.dataTransfer.getData("text");
+    const { createHeroComponent, createStoryTextComponent } = this.props;
+    const table = {
+      "HeroComponent": createHeroComponent,
+      "StoryTextComponent": createStoryTextComponent
+    };
+    table[componentType]();
   }
 
   allowDrop(e) {
@@ -47,6 +52,7 @@ class App extends Component {
         <ul>
           <li draggable onDragStart={ e => { this.drag(e) }}>HeroComponent</li>
           <li draggable onDragStart={ e => { this.drag(e) }}>QuoteComponent</li>
+          <li draggable onDragStart={ e => { this.drag(e) }}>StoryTextComponent</li>
         </ul>
         <div className="drop-zone" onDrop={ e => { this.onDropZoneDrop(e) }} onDragOver={ this.allowDrop }>
           Drop Things Here 
@@ -58,6 +64,9 @@ class App extends Component {
                 if (c._type === 'HeroComponent') {
                   return <HeroComponent data={ c } key={c.uid}/>
                 }
+                if (c._type === 'StoryTextComponent') {
+                  return <StoryTextComponent data={ c } key={c.uid}/>
+                }
               })}
           </div>
         </div>
@@ -66,6 +75,8 @@ class App extends Component {
   }
 }
 
+
+
 const mapStateToProps = state => {
   return {
     components: state.components,
@@ -73,14 +84,21 @@ const mapStateToProps = state => {
   };
 }
 
+const createComponent = (componentActionFunction, dispatch) => {
+  const action = componentActionFunction();
+  const { type, payload } = action;
+  dispatch(action);
+  dispatch(changeSelectedComponent(payload.uid));
+};
+
 const mapDispatchToProps = dispatch => {
   return {
     createHeroComponent: () => {
-      const createHeroComponentAction = createHeroComponent();
-      const { type, payload } = createHeroComponentAction;
-      dispatch(createHeroComponentAction)
-      dispatch(changeSelectedComponent(payload.uid));
-    } 
+      createComponent(createHeroComponent, dispatch);
+    },
+    createStoryTextComponent: () => {
+      createComponent(createStoryTextComponent, dispatch);
+    }
   };
 }
 
