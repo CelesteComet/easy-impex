@@ -32,83 +32,130 @@ class HeroComponent extends Component {
 			subtitle, 
 			text, 
 			primaryCTALink,
-			secondaryCTALink,
+			secondaryLink,
 			videoCTALink,
 			hPosition,
-			renderVideoIcon,
+			videoLinkRenderType,
 			image,
+			mobileImage,
+			renderType,
+			textStyle,
+			allowPadding,
 			changeComponentField, } = this.props.data;
 
 		const { switchSelectedComponent } = this.props;
 
-		var heroAlignment = "col-sm-10 col-md-5 text-align-left";
-		switch(hPosition) {
-			case "LEFT":
-				heroAlignment = "col-sm-10 col-md-5 text-align-left"
-				break;
-			case "RIGHT":
-				heroAlignment = "col-sm-10 col-md-5 text-align-right"
-				break;
-			default:
-				break;
+		const singleVideo 		= !primaryCTALink && !secondaryLink && !text && !subtitle && videoCTALink;
+		const singleHero 			= (renderType == 'SINGLE');
+		const carouselHero 		=	(renderType == 'CAROUSEL');
+		const sideHero				=	(renderType == 'SIDE_BY_SIDE');
+		const hCenter					= (hPosition !== 'LEFT' && hPosition !== 'RIGHT'); 
+		const renderVideoIcon =	(singleVideo || !sideHero && (videoLinkRenderType !== 'Button') && (!primaryCTALink) && (!secondaryLink)); 
+		console.log(!!singleVideo)
+
+		var textAlignment = "col-sm-10 col-md-5 text-align-left";
+		if (sideHero) {
+			textAlignment = "col-sm-10 col-md-8 text-align-center";
+		} else if (hPosition == 'LEFT') {
+			textAlignment = "col-sm-10 col-md-5 text-align-left";	
+		} else if (hPosition == 'RIGHT') {
+			textAlignment = "col-sm-10 col-md-5 text-align-right";	
+		} else if (hPosition == 'singleVideo') {
+			textAlignment = "col-sm-10 col-md-5 text-align-right";	
+		} else {
+			textAlignment = "col-sm-10 col-md-8 text-align-center";
 		}
+
+		let textStyleVar = 'text-light';
+		if (textStyle == 'DARK') {
+			textStyleVar = 'text-dark';
+		} 
+
+		let verticalPaddings = ' no-vertical-paddings';
+		if (allowPadding === 'YES') {
+			verticalPaddings = ' vertical-paddings';
+		}
+
+
 		return (
-			<div onClick={(dispatch) => {switchSelectedComponent(uid)}} data-uid={ uid }>
-				<div className="c-hero banner full-bleed">
-				    <div className="c-hero__item">
-              <div className="c-hero__item__image" style={{backgroundImage: "url(" + image + ")" }} data-mobileImage="${mobileImage.url}" data-desktopImage="http://via.placeholder.com/350x150"></div>
-              <div className="c-hero__item__image"></div>
+			<div>
+				<div className={"c-hero" + (singleHero ? " banner full-bleed" : "") + (singleVideo ? " video-hero" : "") + " " + verticalPaddings} onClick={(dispatch) => {switchSelectedComponent(uid)}} data-uid={ uid }>
+					<div className="c-hero__item">
 
-			        <div className="container-fluid">
-			            <div className="row">
-			                <div className={heroAlignment + " c-hero__item__info valign-center"}>
-			                        <h3 className="c-hero__item__subtitle">{subtitle}</h3>
 
-			                        <h1 className="c-hero__item__title ${singleVideo? ' video-title visible-desktop' : ''}">{title}</h1>
+	      	{mobileImage ? (
+	      		<div className="c-hero__item__image" style={{backgroundImage: "url(" + image + ")"}} data-mobileImage="${mobileImage.url}" data-desktopImage="${image.url}"></div> 
+	      	) : (
+	      		<div className="c-hero__item__image" style={{backgroundImage: "url(" + image + ")"}}></div>
+	      	)}	
 
-			                        <div className="c-hero__item__copy">{text}</div>
+		      	<div className="container-fluid">
+		      		<div className="row">
+		      			<div className={textAlignment + " c-hero__item__info valign-center " + textStyleVar}>
+		      				{ subtitle && <h3 className="c-hero__item__subtitle">{subtitle}</h3>}
+		      				{ title && <h1 className={"c-hero__item__title " + (singleVideo ? " video-title visible-desktop" : "")}>{title}</h1>}
+									{	text && <div className="c-hero__item__copy">{text}</div>}
 
-			                        <div className="c-hero__item__buttons">
-			                                <div data-promotion-ic='${primaryCTALink.uid}'>
-			                                	{ primaryCTALink && <a>{primaryCTALink}</a> }
-			                                	{/*<cms:component component="${primaryLink}"/> */}
-			                                </div>
-			                                <div data-promotion-ic='${secondaryLink.uid}'>
-			                                	{/*<cms:component component="${secondaryLink}"/> */}
-			                                	{ secondaryCTALink && <a>{secondaryCTALink}</a> }
-			                                </div>
-			                                <div data-promotion-ic='${videoCTALink.uid}' className="video-cta js-video-overlay">
-			                                	{/*<cms:component component="${videoCTALink}" /> */}
-			                                </div>
-			                        </div>
 
-			                        <div className="c-hero__item__video js-video-overlay valign-center visible-mobile">
-			                            <img src="/images/youtube-icon.svg"/>
-			                            <div data-promotion-ic='${videoCTALink.uid}'>
-			                            	{/*<cms:component component="${videoCTALink}" /> */}
-			                            </div>
-			                        </div>
-			                </div>
-			            </div>
-			            { videoCTALink && renderVideoIcon && 
-		                <div className="c-hero__item__video js-video-overlay valign-center visible-desktop${(!singleVideo && hCenter) ? ' hide' : ''}">
-		                    <img src="/images/youtube-icon.svg"/>
-		                    <div data-promotion-ic='${videoCTALink.uid}'>
-		                    	{/*<cms:component component="${videoCTALink}" /> */}
-		                    </div>
-		                </div>
-	              	}
-				        </div>
-				    </div>
+
+									{	(primaryCTALink || secondaryLink || (videoCTALink && !renderVideoIcon)) && (
+
+                        <div className="c-hero__item__buttons">
+                        	{primaryCTALink && (
+                        		<div data-promotion-ic='${primaryCTALink.uid}'>
+                        			<a>{primaryCTALink}</a>
+                        		</div>
+                        	)}
+
+                        	{secondaryLink && (
+                        		<div data-promotion-ic='${secondaryLink.uid}'>
+                        			<a>{secondaryLink}</a>
+                        		</div>
+                        	)}
+
+                        	{videoCTALink && !renderVideoIcon && (
+                        		<div data-promotion-ic='${videoCTALink.uid}' className="video-cta js-video-overlay">
+                        			<a>{videoCTALink}</a>
+                        		</div>
+                        	)}
+                        </div>
+
+									)}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		      			</div>
+		      		</div>
+		      	</div>
+
+
+	        
+					</div>
 				</div>
 
+			{singleVideo && !carouselHero && (
 		    <div className="container-fluid c-hero__after single-video visible-mobile no-bleed">
 		        <h2 className="video-title">{title}</h2>
-		    </div>
+		    </div>				
+			)}				
 
+			{text && renderType === 'SINGLE' && !carouselHero && (
 		    <div className="container-fluid c-hero__after hero-description visible-mobile no-bleed">
 		        <p>{text}</p>
-		    </div>
+		    </div>					
+			)}
+
 			</div>
 		);
 	}
