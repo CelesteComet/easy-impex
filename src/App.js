@@ -2,14 +2,16 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 
 // CSS stuff, put into LESS files later
-import './App.css';
+import './css/specialized.css';
 import './css/editor.css';
+import './App.css';
+
 
 import { connect } from 'react-redux';
 
 // actions
 import { createHeroComponent } from './actions/componentActions';
-import { changeCurrentComponent } from './actions/componentNavigatorActions';
+import { changeSelectedComponent } from './actions/componentNavigatorActions';
 
 // components
 import HeroComponent from './components/HeroComponent';
@@ -39,9 +41,7 @@ class App extends Component {
   }
 
   render() {
-    console.log("RERENDERING")
     const { components, currentComponentUID } = this.props;
-    console.log(components)
     return (
       <div className="App">
         <ul>
@@ -79,7 +79,7 @@ const mapDispatchToProps = dispatch => {
       const createHeroComponentAction = createHeroComponent();
       const { type, payload } = createHeroComponentAction;
       dispatch(createHeroComponentAction)
-      dispatch(changeCurrentComponent(payload.uid));
+      dispatch(changeSelectedComponent(payload.uid));
     } 
   };
 }

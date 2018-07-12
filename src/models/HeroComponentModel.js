@@ -6,12 +6,12 @@ class HeroComponentModel {
 		this.hPosition 				= "LEFT";
 		this.title						= "title";
 		this.subtitle					= "subtitle";
-		this.image						= null;
-		this.mobileImage 	    = null;
+		this.image						= "http://via.placeholder.com/350x150";
+		this.mobileImage 	    = undefined;
 		this.textStyle 				= "LIGHT";
-		this.primaryCTALink   = null;
-		this.secondaryCTALink = null; 
-		this.videoCTALink			= null;
+		this.primaryCTALink   = undefined;
+		this.secondaryCTALink = undefined; 
+		this.videoCTALink			= undefined;
 		this.renderVideoIcon  = true;
 		this.text 						= "lorem ipsum";
 	}

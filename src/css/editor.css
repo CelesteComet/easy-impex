@@ -1,5 +1,6 @@
 .editor {
 	width: 400px;
+	height: 500px;
   position: fixed;
   right: 0;
   top: 0;
@@ -7,4 +8,52 @@
   -webkit-font-smoothing: antialiased;
   color: #FFFFFF;
   z-index: 1;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+}
+
+.editor .move-bar {
+  width: 100%;
+  height: 28px;
+  background: rgb(232, 230, 232);
+}
+
+.editor .container {
+  height: 472px;
+  overflow-y: scroll;
+}
+
+.editor ul {
+  padding: 20px;
+  margin: 0px;
+}
+
+.editor li {
+  width: 100%;
+}
+
+.editor label {
+  text-transform: none;
+}
+
+.editor input {
+  float: right;
+}
+
+.editor li, .editor label {
+  display: inline-block;
+}
+
+.editor .move-bar {
+  padding: 6px;
+}
+
+.editor .circle {
+  border-radius: 100%;
+  width: 14px;
+  height: 14px;
+}
+
+.editor .close {
+  background: red;
 }

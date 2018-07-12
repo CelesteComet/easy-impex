@@ -1,8 +1,8 @@
-export const CHANGE_CURRENT_COMPONENT = 'CHANGE_CURRENT_COMPONENT';
+export const CHANGE_SELECTED_COMPONENT = 'CHANGE_SELECTED_COMPONENT';
 
-export const changeCurrentComponent = payload => {
+export const changeSelectedComponent = payload => {
 	return {
-		type: CHANGE_CURRENT_COMPONENT,
+		type: CHANGE_SELECTED_COMPONENT,
 		payload
 	}	
 };

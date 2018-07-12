@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 // components
+import HOCBaseComponent from './HOCBaseComponent'
 import EditorComponent from './EditorComponent';
 
 // actions
@@ -35,8 +36,10 @@ class HeroComponent extends Component {
 			videoCTALink,
 			hPosition,
 			renderVideoIcon,
+			image,
 			changeComponentField, } = this.props.data;
 
+		const { switchSelectedComponent } = this.props;
 
 		var heroAlignment = "col-sm-10 col-md-5 text-align-left";
 		switch(hPosition) {
@@ -50,10 +53,10 @@ class HeroComponent extends Component {
 				break;
 		}
 		return (
-			<div>
+			<div onClick={(dispatch) => {switchSelectedComponent(uid)}} data-uid={ uid }>
 				<div className="c-hero banner full-bleed">
 				    <div className="c-hero__item">
-              <div className="c-hero__item__image" style={{backgroundImage: `url("http://via.placeholder.com/350x150`}} data-mobileImage="${mobileImage.url}" data-desktopImage="http://via.placeholder.com/350x150"></div>
+              <div className="c-hero__item__image" style={{backgroundImage: "url(" + image + ")" }} data-mobileImage="${mobileImage.url}" data-desktopImage="http://via.placeholder.com/350x150"></div>
               <div className="c-hero__item__image"></div>
 
 			        <div className="container-fluid">
@@ -106,10 +109,6 @@ class HeroComponent extends Component {
 		    <div className="container-fluid c-hero__after hero-description visible-mobile no-bleed">
 		        <p>${text}</p>
 		    </div>
-
-
-
-
 			</div>
 		);
 	}
@@ -124,11 +123,19 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
 	return {
 		changeComponentField: (payload) => {
-			dispatch(changeComponentField(payload));
-		}	
+			dispatch(changeComponentField(payload))
+		},
+		dispatch 
 	}
 }
+const MutatedHeroComponent = HOCBaseComponent(HeroComponent);
+console.log(MutatedHeroComponent)
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(MutatedHeroComponent);
 
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(HeroComponent);
+
+
+
