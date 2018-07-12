@@ -51,7 +51,9 @@ class HeroComponent extends Component {
 		const sideHero				=	(renderType == 'SIDE_BY_SIDE');
 		const hCenter					= (hPosition !== 'LEFT' && hPosition !== 'RIGHT'); 
 		const renderVideoIcon =	(singleVideo || !sideHero && (videoLinkRenderType !== 'Button') && (!primaryCTALink) && (!secondaryLink)); 
-		console.log(!!singleVideo)
+
+		console.log(videoCTALink)
+		console.log(renderVideoIcon)
 
 		var textAlignment = "col-sm-10 col-md-5 text-align-left";
 		if (sideHero) {
@@ -100,35 +102,36 @@ class HeroComponent extends Component {
 
 									{	(primaryCTALink || secondaryLink || (videoCTALink && !renderVideoIcon)) && (
 
-                        <div className="c-hero__item__buttons">
-                        	{primaryCTALink && (
-                        		<div data-promotion-ic='${primaryCTALink.uid}'>
-                        			<a>{primaryCTALink}</a>
-                        		</div>
-                        	)}
+	                  <div className="c-hero__item__buttons">
+	                  	{primaryCTALink && (
+	                  		<div data-promotion-ic='${primaryCTALink.uid}'>
+	                  			<a>{primaryCTALink}</a>
+	                  		</div>
+	                  	)}
 
-                        	{secondaryLink && (
-                        		<div data-promotion-ic='${secondaryLink.uid}'>
-                        			<a>{secondaryLink}</a>
-                        		</div>
-                        	)}
+	                  	{secondaryLink && (
+	                  		<div data-promotion-ic='${secondaryLink.uid}'>
+	                  			<a>{secondaryLink}</a>
+	                  		</div>
+	                  	)}
 
-                        	{videoCTALink && !renderVideoIcon && (
-                        		<div data-promotion-ic='${videoCTALink.uid}' className="video-cta js-video-overlay">
-                        			<a>{videoCTALink}</a>
-                        		</div>
-                        	)}
-                        </div>
+	                  	{videoCTALink && !renderVideoIcon && (
+	                  		<div data-promotion-ic='${videoCTALink.uid}' className="video-cta js-video-overlay">
+	                  			<a>{videoCTALink}aaaaaaa</a>
+	                  		</div>
+	                  	)}
+	                  </div>
 
 									)}
 
-
-
-
-
-
-
-
+									{videoCTALink && renderVideoIcon && (
+                    <div className="c-hero__item__video js-video-overlay valign-center visible-mobile">
+                        <img src="images/youtube-icon.svg"/>
+                        <div data-promotion-ic='${videoCTALink.uid}'>
+                        	<a>{videoCTALink}aaaa</a>
+                        </div>
+                    </div>										
+									)}
 
 
 
@@ -137,10 +140,17 @@ class HeroComponent extends Component {
 
 		      			</div>
 		      		</div>
+
+          	{videoCTALink && renderVideoIcon && (
+
+              <div className={"c-hero__item__video js-video-overlay valign-center visible-desktop" + ((singleVideo && hCenter) ? ' hide' : '' )}>
+                  <img src="images/youtube-icon.svg"/>
+                  <div data-promotion-ic='${videoCTALink.uid}'>
+                  	<a>{videoCTALink}</a>
+                  </div>
+              </div>            		
+          	)}		      		
 		      	</div>
-
-
-	        
 					</div>
 				</div>
 
