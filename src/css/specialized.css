@@ -31,6 +31,40 @@ li {
   height: 100px;
 }
 
+#page {
+  height: 100vw;
+}
+
+@font-face {
+  font-family: "DIN Offc W01 Cond";
+  src: url("./din/1381346/ba8374b0-f3d8-4cc2-b782-8bf578b1950f.eot?#iefix");
+  src: url("./din/1381346/ba8374b0-f3d8-4cc2-b782-8bf578b1950f.eot?#iefix") format("eot"), url("./din/1381346/54113791-74a1-4d34-a045-592d484e51b9.woff2") format("woff2"), url("./din/1381346/07e17e93-babd-4bce-bbde-cc2a88b4564a.woff") format("woff"), url("./din/1381346/5dc47294-657d-4a9d-b4f9-e26ea02bfb27.ttf") format("truetype");
+}
+@font-face {
+  font-family: "DIN W01 Cond Medium Italic";
+  src: url("./din/5425842/f7aaa7b2-b009-4bbb-8aa5-8f6b8358c396.eot?#iefix");
+  src: url("./din/5425842/f7aaa7b2-b009-4bbb-8aa5-8f6b8358c396.eot?#iefix") format("eot"), url("./din/5425842/d4b0f6fd-a604-4532-85b6-88dddb77cf24.woff2") format("woff2"), url("./din/5425842/dc4167db-a836-4039-8ee6-700e3942c371.woff") format("woff"), url("./din/5425842/16f3d140-cac3-46b5-82ed-146262ba7200.ttf") format("truetype");
+}
+@font-face {
+  font-family: "DIN W01 Cond Medium";
+  src: url("./din/5425864/0329a25e-6878-415d-bde2-c014b4a427fd.eot?#iefix");
+  src: url("./din/5425864/0329a25e-6878-415d-bde2-c014b4a427fd.eot?#iefix") format("eot"), url("./din/5425864/0c1424f1-df5f-4bf5-b9f5-e637305f9da1.woff2") format("woff2"), url("./din/5425864/0449f93a-6600-48eb-8434-7a45d2112b54.woff") format("woff"), url("./din/5425864/a3e99b9a-fe07-4fe5-8a29-0485438127c3.ttf") format("truetype");
+}
+@font-face {
+  font-family: "DIN W01 Medium";
+  src: url("./din/5426076/9f48a411-8295-4ad8-b97a-f4cc38cef43d.eot?#iefix");
+  src: url("./din/5426076/9f48a411-8295-4ad8-b97a-f4cc38cef43d.eot?#iefix") format("eot"), url("./din/5426076/79949f65-d692-489f-bd6b-b62647297229.woff2") format("woff2"), url("./din/5426076/b9597dec-1d68-488e-87e0-d7824cf36028.woff") format("woff"), url("./din/5426076/964c9b01-5d07-4ef1-8b71-3b173b54fbcc.ttf") format("truetype");
+}
+@font-face {
+  font-family: "DIN W01 Regular";
+  src: url("./din/5426089/a397c752-ee83-47cf-b8a8-b476511dd2c9.eot?#iefix");
+  src: url("./din/5426089/a397c752-ee83-47cf-b8a8-b476511dd2c9.eot?#iefix") format("eot"), url("./din/5426089/53fb9c60-2054-4c31-9283-5562244b4935.woff2") format("woff2"), url("./din/5426089/45831ca8-93bd-4808-aa5f-3c915944f727.woff") format("woff"), url("./din/5426089/429a3e29-88da-4603-94ff-c1450c089c88.ttf") format("truetype");
+}
+@font-face {
+  font-family: "DIN W01 Light";
+  src: url("./din/5426105/f2fdd2b7-b1c3-436b-9041-724c6a02057f.eot?#iefix");
+  src: url("./din/5426105/f2fdd2b7-b1c3-436b-9041-724c6a02057f.eot?#iefix") format("eot"), url("./din/5426105/a5a426db-6dbd-4135-b607-371a197c38fa.woff2") format("woff2"), url("./din/5426105/d6062c05-ec0a-4cd8-b859-20c330d2785f.woff") format("woff"), url("./din/5426105/0a2435f1-0a73-40d5-a303-fc076009ab66.ttf") format("truetype");
+}
 
 /*! normalize.css v2.1.0 | MIT License | git.io/normalize */
 /* ==========================================================================

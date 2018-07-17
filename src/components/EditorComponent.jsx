@@ -24,6 +24,7 @@ class EditorComponent extends Component {
 		this.onStart = this.onStart.bind(this);
 		this.onStop = this.onStop.bind(this);
 		this.clearInputFields = this.clearInputFields.bind(this);
+		this.handleCTADrop = this.handleCTADrop.bind(this);
 	}
 
   handleDrag(e, ui) {
@@ -44,11 +45,12 @@ class EditorComponent extends Component {
     this.setState({activeDrags: --this.state.activeDrags});
   }
 
-	handleInputChange(uid ,elem) {
+	handleInputChange(_uid ,elem) {
+		console.log("HANDLING A CHANGE")
 		const { changeComponentField } = this.props;
 		const value = elem.target.value;
 		const key = elem.target.parentElement.firstElementChild.innerText
-		const payload = {uid, key, value}
+		const payload = {_uid, key, value}
 		changeComponentField(payload);
 	}
 
@@ -61,6 +63,13 @@ class EditorComponent extends Component {
 		}		
 	}
 
+	handleCTADrop(_uid, key, value) {
+		const { changeComponentField } = this.props;
+		const payload = {_uid, key, value};
+		console.log("HANDLING A DROP")
+		changeComponentField(payload);
+	}
+
 
 	render() {
 		this.clearInputFields();
@@ -69,7 +78,7 @@ class EditorComponent extends Component {
     const { allComponents, currentComponentUID, closeEditor, hideEditor, editorVisibility } = this.props;
     const currentComponentModel = allComponents[currentComponentUID];
 		const { 
-			uid,
+			_uid,
 			title, 
 			subtitle, 
 			text, 
@@ -87,19 +96,38 @@ class EditorComponent extends Component {
 					<div className='editor box no-cursor'>
 						<strong>
 							<div className='move-bar'>
-								<div className='close circle' onClick={ hideEditor }></div>
+								<div className='_close circle' onClick={ hideEditor }></div>
 							</div>
 						</strong>
-						<div className='container'>
+						<div className='_container'>
 							<ul>
 								{ Object.keys(currentComponentModel).map((key, i) => {
+									if (key.match('CTA')) {
+										return (
+											<li key={i}>
+												<label>{key}</label>
+													<input 
+														type='text' 
+														ref={this[_uid]}
+														value={currentComponentModel[key]} 
+														onChange={ this.handleInputChange.bind(this, _uid) } 
+														onDrop={(e) => {
+															e.stopPropagation();
+															const uniqueName = e.dataTransfer.getData("uid");
+															e.target.value = uniqueName;
+															this.handleCTADrop(_uid, key, uniqueName);
+														}} />	
+											</li>												
+										);
+									}									
 									return (
+										// consider CTA droppables
 										<li key={i}>
 											<label>{key}</label>
 												<input 
 													type='text' 
 													value={currentComponentModel[key]} 
-													onChange={ this.handleInputChange.bind(this, uid) } />		
+													onChange={ this.handleInputChange.bind(this, _uid) } />		
 										</li>
 									);
 								})}
@@ -122,6 +150,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
 	return {
 		changeComponentField: (payload) => {
+			console.log("GOING THROUGH TO DISPATCH")
 			dispatch(changeComponentField(payload));
 		},
 		showEditor: () => {

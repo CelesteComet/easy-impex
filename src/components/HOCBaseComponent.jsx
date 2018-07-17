@@ -12,9 +12,9 @@ function HOCBaseComponent(WrappedComponent) {
 			this.switchSelectedComponent = this.switchSelectedComponent.bind(this);	
 		}
 
-		switchSelectedComponent(uid) {
+		switchSelectedComponent(_uid) {
 			const { dispatch } = this.props;
-			dispatch(changeSelectedComponent(uid));
+			dispatch(changeSelectedComponent(_uid));
 			dispatch(showEditor());
 		}
 

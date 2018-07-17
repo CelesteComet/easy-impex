@@ -3,13 +3,14 @@
 	height: 500px;
   position: fixed;
   right: 0;
-  top: 0;
+  top: 60px;
   background: #2A2F3A;
   -webkit-font-smoothing: antialiased;
   color: #FFFFFF;
   z-index: 1;
   border-top-right-radius: 10px;
   border-top-left-radius: 10px;
+  box-shadow: 10px 5px 15px grey;
 }
 
 .editor .move-bar {
@@ -18,7 +19,7 @@
   background: rgb(232, 230, 232);
 }
 
-.editor .container {
+.editor ._container {
   height: 472px;
   overflow-y: scroll;
 }
@@ -54,6 +55,10 @@
   height: 14px;
 }
 
-.editor .close {
+.editor .circle:hover {
+  cursor: pointer;
+}
+
+.editor ._close {
   background: red;
 }

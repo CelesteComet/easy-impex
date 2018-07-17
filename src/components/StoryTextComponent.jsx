@@ -19,7 +19,7 @@ class StoryTextComponent extends Component {
 
 	render() {
 		const { 
-			uid,
+			_uid,
 			title, 
 			subtitle, 
 			paragraph, 
@@ -30,7 +30,7 @@ class StoryTextComponent extends Component {
 		const { switchSelectedComponent, dispatch } = this.props;
 		console.log(!!textCTA)
 		return (
-			<div className="container-fluid storytext-wrapper no-bleed" onClick={(dispatch) => {switchSelectedComponent(uid)}}>
+			<div className="container-fluid storytext-wrapper no-bleed" onClick={(dispatch) => {switchSelectedComponent(_uid)}}>
 			  <div className="row">
 			    <div className="storytext col-sm-12 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3">
 			      {subtitle 	&& <h2 className="storytext__subtitle">{subtitle}</h2>}

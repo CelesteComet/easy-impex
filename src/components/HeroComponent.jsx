@@ -6,7 +6,7 @@ import HOCBaseComponent from './HOCBaseComponent'
 import EditorComponent from './EditorComponent';
 
 // actions
-import { changeComponentField } from '../actions/componentActions';
+import { changeComponentField, addToHeroComponents } from '../actions/componentActions';
 
 
 class HeroComponent extends Component {
@@ -15,19 +15,38 @@ class HeroComponent extends Component {
 		this.state = {
 			dialog: true
 		};
+
+		this.drag = this.drag.bind(this);
+		this.handleDrop = this.handleDrop.bind(this);
 	}
 
-	handleInputChange(uid ,elem) {
+	// Drag stuff
+
+	drag(e, heroComponent) {
+		console.log(heroComponent);
+	}
+
+	handleDrop(e, heroComponent) {
+		e.stopPropagation();
+		const { addToHeroComponents } = this.props;
+		const _uid = this.props.data._uid;
+		const key = "HeroComponents";
+		const value = this;
+		const payload = {_uid, key, value}
+		addToHeroComponents(payload);
+	}
+
+	handleInputChange(_uid ,elem) {
 		const { changeComponentField } = this.props;
 		const value = elem.target.value;
 		const key = elem.target.labels[0].innerText;
-		const payload = {uid, key, value}
+		const payload = {_uid, key, value}
 		changeComponentField(payload);
 	}
 
 	render() {
 		const { 
-			uid,
+			_uid,
 			title, 
 			subtitle, 
 			text, 
@@ -41,7 +60,9 @@ class HeroComponent extends Component {
 			renderType,
 			textStyle,
 			allowPadding,
-			changeComponentField, } = this.props.data;
+			changeComponentField,
+			addToHeroComponents,
+			heroComponents } = this.props.data;
 
 		const { switchSelectedComponent } = this.props;
 
@@ -80,8 +101,8 @@ class HeroComponent extends Component {
 
 
 		return (
-			<div>
-				<div className={"c-hero" + (singleHero ? " banner full-bleed" : "") + (singleVideo ? " video-hero" : "") + " " + verticalPaddings} onClick={(dispatch) => {switchSelectedComponent(uid)}} data-uid={ uid }>
+			<div onClick={(dispatch) => {switchSelectedComponent(_uid)}} data-uid={ _uid } draggable onDragStart={ e => { this.drag(e, this) }} onDrop={ this.handleDrop }>
+				<div className={"c-hero" + (singleHero ? " banner full-bleed" : "") + (singleVideo ? " video-hero" : "") + " " + verticalPaddings}>
 					<div className="c-hero__item">
 
 
@@ -181,6 +202,9 @@ const mapDispatchToProps = dispatch => {
 	return {
 		changeComponentField: (payload) => {
 			dispatch(changeComponentField(payload))
+		},
+		addToHeroComponents: payload => {
+			dispatch(addToHeroComponents(payload))
 		},
 		dispatch 
 	}

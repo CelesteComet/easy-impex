@@ -10,13 +10,23 @@ import './App.css';
 import { connect } from 'react-redux';
 
 // actions
-import { createHeroComponent, createStoryTextComponent } from './actions/componentActions';
+import { 
+  createHeroComponent, 
+  createStoryTextComponent,
+  createCMSLinkComponent
+} from './actions/componentActions';
+
 import { changeSelectedComponent } from './actions/componentNavigatorActions';
+
+
+// UI 
+import NavBar from './components/NavBar';
 
 // components
 import HeroComponent from './components/HeroComponent';
 import EditorComponent from './components/EditorComponent';
 import StoryTextComponent from './components/StoryTextComponent';
+import HeroComponentWrapper from './components/HeroComponentWrapper';
 
 class App extends Component {
 
@@ -46,26 +56,21 @@ class App extends Component {
   }
 
   render() {
-    const { components, currentComponentUID } = this.props;
+    const { components, currentComponentUID, createCMSLinkComponent } = this.props;
     return (
-      <div className="App">
-        <ul>
-          <li draggable onDragStart={ e => { this.drag(e) }}>HeroComponent</li>
-          <li draggable onDragStart={ e => { this.drag(e) }}>QuoteComponent</li>
-          <li draggable onDragStart={ e => { this.drag(e) }}>StoryTextComponent</li>
-        </ul>
-        <div className="drop-zone" onDrop={ e => { this.onDropZoneDrop(e) }} onDragOver={ this.allowDrop }>
-          Drop Things Here 
-        </div>
+      <div className="App" onDrop={ e => { this.onDropZoneDrop(e) }} onDragOver={ this.allowDrop }>
+        <NavBar createCMSLinkComponent={createCMSLinkComponent} />
+
         { currentComponentUID && <EditorComponent data={ components[currentComponentUID] } /> }
         <div id="page">
           <div id="content">
               { Object.values(components).map((c) => {
                 if (c._type === 'HeroComponent') {
-                  return <HeroComponent data={ c } key={c.uid}/>
+                  let hero = <HeroComponent data={c} key={c._uid} />
+                  return <HeroComponentWrapper renderType={ c.renderType } heroComponents={[hero]} data={ c } key={c._uid}/>
                 }
                 if (c._type === 'StoryTextComponent') {
-                  return <StoryTextComponent data={ c } key={c.uid}/>
+                  return <StoryTextComponent data={ c } key={c._uid}/>
                 }
               })}
           </div>
@@ -88,7 +93,7 @@ const createComponent = (componentActionFunction, dispatch) => {
   const action = componentActionFunction();
   const { type, payload } = action;
   dispatch(action);
-  dispatch(changeSelectedComponent(payload.uid));
+  dispatch(changeSelectedComponent(payload._uid));
 };
 
 const mapDispatchToProps = dispatch => {
@@ -98,6 +103,10 @@ const mapDispatchToProps = dispatch => {
     },
     createStoryTextComponent: () => {
       createComponent(createStoryTextComponent, dispatch);
+    },
+    createCMSLinkComponent: () => {
+      console.log("CREATING")
+      createComponent(createCMSLinkComponent, dispatch);
     }
   };
 }
