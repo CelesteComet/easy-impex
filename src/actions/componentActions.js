@@ -16,6 +16,7 @@ export const ADD_TO_HERO_COMPONENTS = 'ADD_TO_HERO_COMPONENTS';
 export const createHeroComponent = () => {
 	let payload = new HeroComponentModel;
 	payload._uid = uuid();
+	payload.heroComponents.push(payload._uid);
 	return {
 		type: CREATE_HERO_COMPONENT,
 		payload

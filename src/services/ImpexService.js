@@ -1,6 +1,7 @@
 const componentTitles = {
 	StoryTextComponent: "INSERT_UPDATE StoryTextComponent; $contentCV[unique = true]; uid[unique = true]    ; title; primaryCTA(uid, $contentCV); subtitle; paragraph",
-	CMSLinkComponent: "INSERT_UPDATE CMSLinkComponent; $contentCV[unique = true]; uid[unique = true]       ; name                     ; linkName              ; url                            ; target(code)[default = 'sameWindow']"
+	CMSLinkComponent: "INSERT_UPDATE CMSLinkComponent; $contentCV[unique = true]; uid[unique = true]       ; name                     ; linkName              ; url                            ; target(code)[default = 'sameWindow']",
+	HeroComponent: "INSERT_UPDATE HeroComponent; $contentCV[unique = true]; uid[unique = true]; hPosition(code); name            ; title                   ; subtitle                  ; image(code, $contentCV); mobileImage(code, $contentCV); textStyle(code); videoLinkRenderType(code); primaryCTALink(uid, $contentCV); secondaryLink(uid, $contentCV); VideoCTALink(uid, $contentCV); text"
 }
 
 
@@ -76,7 +77,12 @@ function ImpexService(state) {
 
 		console.log(someString);
 
-
+		let blob = new Blob([someString], {type: "text/plain"});
+    let url = window.URL.createObjectURL(blob);
+    let a = document.createElement('a');
+    a.href = url;
+    a.download = 'stuff.impex';
+    a.click();
 
 
 

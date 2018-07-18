@@ -18,6 +18,7 @@ class NavBar extends Component {
     this.onDropZoneDrop = this.onDropZoneDrop.bind(this);
     this.allowDrop = this.allowDrop.bind(this);
     this.drag = this.drag.bind(this);
+    this.handleImageDrop = this.handleImageDrop.bind(this);
   }
 
   onDropZoneDrop(e) {
@@ -28,6 +29,19 @@ class NavBar extends Component {
       "StoryTextComponent": createStoryTextComponent
     };
     table[componentType]();
+  }
+
+  handleImageDrop(e) {
+  	e.stopPropagation();
+  	e.preventDefault();
+  	let files = e.dataTransfer.files
+  	let arrayOfFileNames = [];
+  	for (let i = 0; i < files.length; i++) {
+		  arrayOfFileNames.push(files[i].name);
+  	}
+
+  	console.log(arrayOfFileNames);
+
   }
 
   allowDrop(e) {
@@ -52,6 +66,17 @@ class NavBar extends Component {
 			    </Navbar.Brand>
 			  </Navbar.Header>
 			  <Nav>
+			  	{/* TODO GET RID OF THE DAMN IDS  */}
+			  	
+			    <NavDropdown eventKey={3} title="Images" id="basic-nav-dropdown">
+			    	<form>
+			    		<input type="file" id="fileElem" multiple onDrop={ this.handleImageDrop } onDragOver={(e) => {e.preventDefault()}} />
+			    	</form>
+			    	{componentNames.map(componentName => {
+			    		return <MenuItem eventKey={3.1} draggable onDragStart={ e => { this.drag(e) }}>{componentName}</MenuItem>
+			    	})}
+			    </NavDropdown>
+			    
 			    <NavDropdown eventKey={3} title="UI Components" id="basic-nav-dropdown">
 			    	{componentNames.map(componentName => {
 			    		return <MenuItem eventKey={3.1} draggable onDragStart={ e => { this.drag(e) }}>{componentName}</MenuItem>

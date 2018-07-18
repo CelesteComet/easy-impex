@@ -29,7 +29,7 @@ const componentReducer = (state = initialState, action) => {
 			return newState;
 			break;
 		case ADD_TO_HERO_COMPONENTS:
-			newState[action.payload._uid]["heroComponents"].push(action.payload.value.props.data._uid);
+			newState[action.payload._uid]["heroComponents"].push(action.payload.value);
 			return newState;
 			break;			
 		default:

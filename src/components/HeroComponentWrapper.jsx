@@ -1,6 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 
+import HeroComponent from './HeroComponent';
+
 class HeroComponentWrapper extends Component {
 	constructor(props) {
 		super(props);
@@ -8,27 +10,28 @@ class HeroComponentWrapper extends Component {
 
 	render() {
 		const {
-			heroComponents, // array
-			renderType // string
+			heroComponentUIDs, // array
+			renderType, // string
+			allComponents // object
 		} = this.props;
-
 		if (renderType === 'SINGLE') {
+			const heroModel = allComponents[heroComponentUIDs[0]];
 			return (
 				<Fragment>
-					{heroComponents[0]}
+					<HeroComponent data={heroModel}/>
 				</Fragment>
 			);
 		}
-
 
 		if (renderType === 'SIDE_BY_SIDE') {
 			return (
 				<div className="container-fluid side-by_side no-bleed">
 					<div className="row">
-						{heroComponents.map(heroComponent => {
+						{heroComponentUIDs.map(heroComponentUID => {
+							const heroModel = allComponents[heroComponentUID];
 							return (
-								<div className='col-sm-12 col-md-6' key={heroComponent.props.data._uid}>
-									{heroComponent}
+								<div className='col-sm-12 col-md-6' key={heroComponentUID}>
+									<HeroComponent data={heroModel} />
 								</div>
 							);
 						})}
@@ -37,17 +40,25 @@ class HeroComponentWrapper extends Component {
 			);
 		}
 
-
+		const heroModel = allComponents[heroComponentUIDs[0]];
 		return (
 			<Fragment>
-				{heroComponents[0]}
+				<HeroComponent data={heroModel}/>
 			</Fragment>
-		);
+		);		
+
+
+
+
+
+
 	}
 }
 
 const mapStateToProps = state => {
-	return { state }
+	return {
+		allComponents: state.components
+	}
 }
 
 const mapDispatchToProps = dispatch => {

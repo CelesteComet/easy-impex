@@ -23,7 +23,7 @@ class HeroComponent extends Component {
 	// Drag stuff
 
 	drag(e, heroComponent) {
-		console.log(heroComponent);
+		e.dataTransfer.setData("incoming_uid", heroComponent.props.data._uid);
 	}
 
 	handleDrop(e, heroComponent) {
@@ -31,7 +31,7 @@ class HeroComponent extends Component {
 		const { addToHeroComponents } = this.props;
 		const _uid = this.props.data._uid;
 		const key = "HeroComponents";
-		const value = this;
+		const value = e.dataTransfer.getData("incoming_uid");;
 		const payload = {_uid, key, value}
 		addToHeroComponents(payload);
 	}

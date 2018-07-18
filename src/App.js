@@ -66,8 +66,7 @@ class App extends Component {
           <div id="content">
               { Object.values(components).map((c) => {
                 if (c._type === 'HeroComponent') {
-                  let hero = <HeroComponent data={c} key={c._uid} />
-                  return <HeroComponentWrapper renderType={ c.renderType } heroComponents={[hero]} data={ c } key={c._uid}/>
+                  return <HeroComponentWrapper renderType={ c.renderType } heroComponentUIDs={c.heroComponents} data={ c } key={c._uid}/>
                 }
                 if (c._type === 'StoryTextComponent') {
                   return <StoryTextComponent data={ c } key={c._uid}/>
@@ -105,7 +104,6 @@ const mapDispatchToProps = dispatch => {
       createComponent(createStoryTextComponent, dispatch);
     },
     createCMSLinkComponent: () => {
-      console.log("CREATING")
       createComponent(createCMSLinkComponent, dispatch);
     }
   };
