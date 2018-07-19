@@ -12,6 +12,7 @@ import { connect } from 'react-redux';
 // actions
 import { 
   createHeroComponent, 
+  createHeroWrapperComponent,
   createStoryTextComponent,
   createCMSLinkComponent
 } from './actions/componentActions';
@@ -26,7 +27,8 @@ import NavBar from './components/NavBar';
 import HeroComponent from './components/HeroComponent';
 import EditorComponent from './components/EditorComponent';
 import StoryTextComponent from './components/StoryTextComponent';
-import HeroComponentWrapper from './components/HeroComponentWrapper';
+import HeroWrapperComponent from './components/HeroWrapperComponent';
+import ModalContainer from './components/ModalContainer';
 
 class App extends Component {
 
@@ -39,10 +41,12 @@ class App extends Component {
 
   onDropZoneDrop(e) {
     const componentType = e.dataTransfer.getData("text");
-    const { createHeroComponent, createStoryTextComponent } = this.props;
+    const { createHeroComponent, createStoryTextComponent, createHeroWrapperComponent } = this.props;
     const table = {
       "HeroComponent": createHeroComponent,
-      "StoryTextComponent": createStoryTextComponent
+      "HeroWrapperComponent": createHeroWrapperComponent,
+      "StoryTextComponent": createStoryTextComponent,
+
     };
     table[componentType]();
   }
@@ -66,11 +70,19 @@ class App extends Component {
           <div id="content">
               { Object.values(components).map((c) => {
                 if (c._type === 'HeroComponent') {
-                  return <HeroComponentWrapper renderType={ c.renderType } heroComponentUIDs={c.heroComponents} data={ c } key={c._uid}/>
+                  return (
+                    <ModalContainer>
+                      <HeroComponent renderType={ c.renderType } heroComponentUIDs={c.heroComponents} data={ c } key={c._uid}/>
+                    </ModalContainer>
+                  );
+                    
                 }
                 if (c._type === 'StoryTextComponent') {
                   return <StoryTextComponent data={ c } key={c._uid}/>
                 }
+                if (c._type === 'HeroWrapperComponent') {
+                  return <HeroWrapperComponent data={ c } key={c._uid}/>
+                }                
               })}
           </div>
         </div>
@@ -100,6 +112,9 @@ const mapDispatchToProps = dispatch => {
     createHeroComponent: () => {
       createComponent(createHeroComponent, dispatch);
     },
+    createHeroWrapperComponent: () => {
+      createComponent(createHeroWrapperComponent, dispatch);
+    },    
     createStoryTextComponent: () => {
       createComponent(createStoryTextComponent, dispatch);
     },

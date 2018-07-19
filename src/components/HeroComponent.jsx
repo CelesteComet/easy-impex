@@ -99,9 +99,8 @@ class HeroComponent extends Component {
 			verticalPaddings = ' vertical-paddings';
 		}
 
-
 		return (
-			<div onClick={(dispatch) => {switchSelectedComponent(_uid)}} data-uid={ _uid } draggable onDragStart={ e => { this.drag(e, this) }} onDrop={ this.handleDrop }>
+			<div onClick={(dispatch) => {console.log("CLICKING"); switchSelectedComponent(_uid)}} data-uid={ _uid } draggable onDragStart={ e => { this.drag(e, this) }} onDrop={ this.handleDrop }>
 				<div className={"c-hero" + (singleHero ? " banner full-bleed" : "") + (singleVideo ? " video-hero" : "") + " " + verticalPaddings}>
 					<div className="c-hero__item">
 

@@ -1,6 +1,7 @@
 
 import { 
 	CREATE_HERO_COMPONENT,
+	CREATE_HERO_WRAPPER_COMPONENT,
 	CREATE_STORY_TEXT_COMPONENT,
 	CREATE_CMS_LINK_COMPONENT,
 	CHANGE_COMPONENT_FIELD,
@@ -20,6 +21,10 @@ const componentReducer = (state = initialState, action) => {
 			newState[action.payload._uid] = action.payload;
 			return newState;
 			break;	
+		case CREATE_HERO_WRAPPER_COMPONENT:
+			newState[action.payload._uid] = action.payload;
+			return newState;
+			break;			
 		case CREATE_CMS_LINK_COMPONENT:
 			newState[action.payload._uid] = action.payload;
 			return newState;

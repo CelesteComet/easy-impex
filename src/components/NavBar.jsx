@@ -7,9 +7,11 @@ import { connect } from 'react-redux';
 import HOCBaseComponent from './HOCBaseComponent'
 
 const componentNames = [
-	"HeroComponent", 
+	"HeroComponent",
+	"HeroWrapperComponent",
 	"QuoteComponent", 
-	"StoryTextComponent"
+	"StoryTextComponent",
+
 ];
 
 class NavBar extends Component {

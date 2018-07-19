@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import HeroComponent from './HeroComponent';
 
-class HeroComponentWrapper extends Component {
+class HeroWrapperComponent extends Component {
 	constructor(props) {
 		super(props);
 	}
@@ -40,11 +40,10 @@ class HeroComponentWrapper extends Component {
 			);
 		}
 
-		const heroModel = allComponents[heroComponentUIDs[0]];
 		return (
-			<Fragment>
-				<HeroComponent data={heroModel}/>
-			</Fragment>
+			<div>
+				Drop some heroes 
+			</div>
 		);		
 
 
@@ -65,4 +64,4 @@ const mapDispatchToProps = dispatch => {
 	return { dispatch }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(HeroComponentWrapper)
+export default connect(mapStateToProps, mapDispatchToProps)(HeroWrapperComponent);

@@ -2,11 +2,13 @@ import { v4 as uuid } from 'uuid';
 
 // import a component model function
 import HeroComponentModel from '../models/HeroComponentModel';
+import HeroWrapperComponentModel from '../models/HeroWrapperComponentModel';
 import StoryTextComponentModel from '../models/StoryTextComponentModel';
 import CMSLinkComponentModel from '../models/CMSLinkComponentModel';
 
 // add create component action constants here
 export const CREATE_HERO_COMPONENT = 'CREATE_HERO_COMPONENT';
+export const CREATE_HERO_WRAPPER_COMPONENT = 'CREATE_HERO_WRAPPER_COMPONENT';
 export const CREATE_STORY_TEXT_COMPONENT = 'CREATE_STORY_TEXT_COMPONENT';
 export const CREATE_CMS_LINK_COMPONENT = 'CREATE_CMS_LINK_COMPONENT';
 
@@ -16,9 +18,17 @@ export const ADD_TO_HERO_COMPONENTS = 'ADD_TO_HERO_COMPONENTS';
 export const createHeroComponent = () => {
 	let payload = new HeroComponentModel;
 	payload._uid = uuid();
-	payload.heroComponents.push(payload._uid);
 	return {
 		type: CREATE_HERO_COMPONENT,
+		payload
+	}	
+};
+
+export const createHeroWrapperComponent = () => {
+	let payload = new HeroWrapperComponentModel;
+	payload._uid = uuid();
+	return {
+		type: CREATE_HERO_WRAPPER_COMPONENT,
 		payload
 	}	
 };
