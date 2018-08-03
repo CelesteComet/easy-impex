@@ -3,8 +3,8 @@ import HeroComponentModel from '../models/HeroComponentModel';
 export const SHOW_EDITOR = 'SHOW_EDITOR';
 export const HIDE_EDITOR = 'HIDE_EDITOR';
 
-export const SHOW_HERO_MODAL = 'SHOW_HERO_MODAL';
-export const HIDE_HERO_MODAL = 'HIDE_HERO_MODAL';
+export const SHOW_MODAL = 'SHOW_MODAL';
+export const HIDE_MODAL = 'HIDE_MODAL';
 
 export const showEditor = () => {
 	return {
@@ -18,15 +18,17 @@ export const hideEditor = () => {
 	}	
 };
 
-export const showHeroModal = () => {
+export const showModal = payload => {
 	return {
-		type: SHOW_HERO_MODAL 
+		type: SHOW_MODAL, 
+		payload
 	}	
 };
 
-export const hideHeroModal = () => {
+export const hideModal = payload => {
 	return {
-		type: HIDE_HERO_MODAL 
+		type: HIDE_MODAL,
+		payload 
 	}
 };
 

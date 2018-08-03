@@ -14,6 +14,7 @@ import {
   createHeroComponent, 
   createHeroWrapperComponent,
   createStoryTextComponent,
+  createHeroSplitComponent,
   createCMSLinkComponent
 } from './actions/componentActions';
 
@@ -28,6 +29,7 @@ import HeroComponent from './components/HeroComponent';
 import EditorComponent from './components/EditorComponent';
 import StoryTextComponent from './components/StoryTextComponent';
 import HeroWrapperComponent from './components/HeroWrapperComponent';
+import HeroSplitComponent from './components/HeroSplitComponent';
 import ModalContainer from './components/ModalContainer';
 
 class App extends Component {
@@ -41,12 +43,17 @@ class App extends Component {
 
   onDropZoneDrop(e) {
     const componentType = e.dataTransfer.getData("text");
-    const { createHeroComponent, createStoryTextComponent, createHeroWrapperComponent } = this.props;
+    const { 
+      createHeroComponent, 
+      createStoryTextComponent, 
+      createHeroWrapperComponent,
+      createHeroSplitComponent
+    } = this.props;
     const table = {
       "HeroComponent": createHeroComponent,
       "HeroWrapperComponent": createHeroWrapperComponent,
       "StoryTextComponent": createStoryTextComponent,
-
+      "HeroSplitComponent": createHeroSplitComponent
     };
     table[componentType]();
   }
@@ -60,7 +67,7 @@ class App extends Component {
   }
 
   render() {
-    const { components, currentComponentUID, createCMSLinkComponent } = this.props;
+    const { components, currentComponentUID, createCMSLinkComponent, modalId } = this.props;
     return (
       <div className="App" onDrop={ e => { this.onDropZoneDrop(e) }} onDragOver={ this.allowDrop }>
         <NavBar createCMSLinkComponent={createCMSLinkComponent} />
@@ -68,22 +75,26 @@ class App extends Component {
         { currentComponentUID && <EditorComponent data={ components[currentComponentUID] } /> }
         <div id="page">
           <div id="content">
-              { Object.values(components).map((c) => {
-                if (c._type === 'HeroComponent') {
-                  return (
-                    <ModalContainer>
-                      <HeroComponent renderType={ c.renderType } heroComponentUIDs={c.heroComponents} data={ c } key={c._uid}/>
-                    </ModalContainer>
-                  );
-                    
-                }
-                if (c._type === 'StoryTextComponent') {
-                  return <StoryTextComponent data={ c } key={c._uid}/>
-                }
-                if (c._type === 'HeroWrapperComponent') {
-                  return <HeroWrapperComponent data={ c } key={c._uid}/>
-                }                
-              })}
+            { modalId && <ModalContainer /> }
+            { Object.values(components).map((c) => {
+              // if (c._type === 'HeroComponent') {
+              //   return (
+              //     <ModalContainer>
+              //       <HeroComponent renderType={ c.renderType } heroComponentUIDs={c.heroComponents} data={ c } key={c._uid}/>
+              //     </ModalContainer>
+              //   );
+                  
+              // }
+              if (c._type === 'StoryTextComponent') {
+                return <StoryTextComponent data={ c } key={c._uid}/>
+              }
+              if (c._type === 'HeroWrapperComponent') {
+                return <HeroWrapperComponent data={ c } key={c._uid}/>
+              }
+              if (c._type == 'HeroSplitComponent') {
+                return <HeroSplitComponent data={ c } key={c._uid}/>
+              }          
+            })}
           </div>
         </div>
       </div>
@@ -96,7 +107,9 @@ class App extends Component {
 const mapStateToProps = state => {
   return {
     components: state.components,
-    currentComponentUID: state.navigator.componentUID
+    currentComponentUID: state.navigator.componentUID,
+    modalId: state.editor.modalId
+
   };
 }
 
@@ -117,6 +130,9 @@ const mapDispatchToProps = dispatch => {
     },    
     createStoryTextComponent: () => {
       createComponent(createStoryTextComponent, dispatch);
+    },
+    createHeroSplitComponent: () => {
+      createComponent(createHeroSplitComponent, dispatch);
     },
     createCMSLinkComponent: () => {
       createComponent(createCMSLinkComponent, dispatch);

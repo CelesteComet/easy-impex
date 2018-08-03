@@ -5,7 +5,10 @@ import Draggable from 'react-draggable';
 
 // actions
 import { changeComponentField } from '../actions/componentActions';
-import { showEditor, hideEditor } from '../actions/editorActions';
+import { showModal, hideModal} from '../actions/editorActions';
+
+// components
+import HeroComponent from './HeroComponent';
 
 class ModalContainer extends Component {
 	constructor(props) {
@@ -44,20 +47,24 @@ class ModalContainer extends Component {
   }	
 
 	render() {
-
 		const dragHandlers = {onStart: this.onStart, onStop: this.onStop};
-		const { hideEditor } = this.props;
+		const { hideModal } = this.props;
+		const componentData = this.props.allComponents[this.props.modalId];
 		return (
-			<Draggable bounds="body" handle="strong" {...dragHandlers} style="resize: both;">
-				<div className='editor box no-cursor'>
-					<strong>
-						<div className='move-bar'>
-							<div className='_close circle' onClick={ hideEditor }></div>
+			<div>
+				<Draggable bounds="body" handle="strong" {...dragHandlers} style="resize: both;">
+					<div className='editor _modal box no-cursor'>
+						<strong>
+							<div className='move-bar'>
+								<div className='_close circle' onClick={ hideModal }></div>
+							</div>
+						</strong>			
+						<div className='_container'>
+							<HeroComponent data={ componentData } />
 						</div>
-					</strong>			
-				{ this.props.children }
-				</div>
-			</Draggable>
+					</div>
+				</Draggable>
+			</div>
 		);
 	}
 }
@@ -66,7 +73,8 @@ const mapStateToProps = state => {
 	return {
 		allComponents: state.components,
 		currentComponentUID: state.navigator.componentUID,
-		editorVisibility: state.editor.visibility
+		editorVisibility: state.editor.visibility,
+		modalId: state.editor.modalId
 	};
 }
 
@@ -75,11 +83,11 @@ const mapDispatchToProps = dispatch => {
 		changeComponentField: (payload) => {
 			dispatch(changeComponentField(payload));
 		},
-		showEditor: () => {
-			dispatch(showEditor());
+		showModal: _uid => {
+			dispatch(showModal(_uid));
 		},
-		hideEditor: () => {
-			dispatch(hideEditor());
+		hideModal: _uid => {
+			dispatch(hideModal(_uid));
 		}
 	}
 }

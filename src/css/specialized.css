@@ -8085,14 +8085,22 @@ ol ol {
 .c-herosplit__subtitle + .c-herosplit__description {
   margin-top: 14px;
 }
-.c-herosplit__title {
-  font-family: 'DIN W01 Medium', sans-serif;
-  font-size: 18px;
-  line-height: 23px;
+.c-herosplit__title,
+.c-herosplit__headline {
   text-transform: none;
   margin-bottom: 28px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+.c-herosplit__title {
+  font-family: 'DIN W01 Medium', sans-serif;
+  font-size: 18px;
+  line-height: 23px;
+}
+.c-herosplit__headline {
+  font-family: 'DIN W01 Cond Medium', sans-serif;
+  font-size: 48px;
+  line-height: 46px;
 }
 .c-herosplit__description {
   font-size: 14px;
@@ -8130,7 +8138,7 @@ ol ol {
 .c-herosplit__link a:hover {
   color: inherit;
 }
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 767px) {
   .c-herosplit {
     height: auto;
   }
@@ -8181,6 +8189,7 @@ ol ol {
     width: -webkit-max-content;
     width: -moz-max-content;
     width: max-content;
+    display: inline-block;
   }
   .c-herosplit__button a {
     font-size: 11px;
@@ -8222,7 +8231,7 @@ ol ol {
     height: 35.56%;
   }
 }
-@media screen and (min-width: 769px) {
+@media screen and (min-width: 768px) {
   .c-herosplit__image {
     float: left;
   }

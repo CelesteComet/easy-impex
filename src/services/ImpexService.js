@@ -1,7 +1,8 @@
 const componentTitles = {
 	StoryTextComponent: "INSERT_UPDATE StoryTextComponent; $contentCV[unique = true]; uid[unique = true]    ; title; primaryCTA(uid, $contentCV); subtitle; paragraph",
 	CMSLinkComponent: "INSERT_UPDATE CMSLinkComponent; $contentCV[unique = true]; uid[unique = true]       ; name                     ; linkName              ; url                            ; target(code)[default = 'sameWindow']",
-	HeroComponent: "INSERT_UPDATE HeroComponent; $contentCV[unique = true]; uid[unique = true]; hPosition(code); name            ; title                   ; subtitle                  ; image(code, $contentCV); mobileImage(code, $contentCV); textStyle(code); videoLinkRenderType(code); primaryCTALink(uid, $contentCV); secondaryLink(uid, $contentCV); VideoCTALink(uid, $contentCV); text"
+	HeroComponent: "INSERT_UPDATE HeroComponent; $contentCV[unique = true]; uid[unique = true]; hPosition(code); name            ; title                   ; subtitle                  ; image(code, $contentCV); mobileImage(code, $contentCV); textStyle(code); videoLinkRenderType(code); primaryCTALink(uid, $contentCV); secondaryLink(uid, $contentCV); VideoCTALink(uid, $contentCV); text",
+	MediaComponent: "INSERT_UPDATE Media; $contentCV[unique = true]; code[unique = true] ; mime      ; realFileName                                            ; @media[translator = de.hybris.platform.impex.jalo.media.MediaDataTranslator][forceWrite = true]; folder(qualifier)[default = 'images']"
 }
 
 
@@ -32,12 +33,12 @@ function ImpexService(state) {
 		// returns an array of all the properties
 		const necessaryProperties = title.split(";").map(a => {return a.trim()})
 			.map(a => {
-
-				let match = a.match("(.+)\\(");
+				let match = a.match("^(.+)\\(");
 				if (match) {
 					return match[1];
 				} else {
-					match = a.match("(.+)\\[");
+					let regexp = new RegExp("([^\[]+)\\[")
+					match = regexp.exec(a);
 				}
 
 				if (match) {

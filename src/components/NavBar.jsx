@@ -4,14 +4,18 @@ import GenerateImpexButton from './GenerateImpexButton';
 import _ from 'lodash';
 import { connect } from 'react-redux';
 
+// components 
 import HOCBaseComponent from './HOCBaseComponent'
+
+// actions
+import { createMediaComponent, changeComponentField } from '../actions/componentActions';
 
 const componentNames = [
 	"HeroComponent",
 	"HeroWrapperComponent",
+	"HeroSplitComponent",
 	"QuoteComponent", 
-	"StoryTextComponent",
-
+	"StoryTextComponent"
 ];
 
 class NavBar extends Component {
@@ -25,9 +29,10 @@ class NavBar extends Component {
 
   onDropZoneDrop(e) {
     const componentType = e.dataTransfer.getData("text");
-    const { createHeroComponent, createStoryTextComponent } = this.props;
+    const { createHeroComponent, createHeroSplitComponent, createStoryTextComponent } = this.props;
     const table = {
       "HeroComponent": createHeroComponent,
+      "HeroSplitComponent": createHeroSplitComponent,
       "StoryTextComponent": createStoryTextComponent
     };
     table[componentType]();
@@ -36,15 +41,43 @@ class NavBar extends Component {
   handleImageDrop(e) {
   	e.stopPropagation();
   	e.preventDefault();
+
+  	const { createMediaComponent } = this.props;
+
   	let files = e.dataTransfer.files
   	let arrayOfFileNames = [];
   	for (let i = 0; i < files.length; i++) {
+  		let filename = files[i].name;
+  		
 		  arrayOfFileNames.push(files[i].name);
   	}
 
-  	console.log(arrayOfFileNames);
+  	for (let i = 0; i < files.length; i++) {
+			let file = files[i];
+  		let reader = new FileReader();
+  		reader.addEventListener("load", () => {
+  			let base64String = reader.result;
+  			let filename = files[i].name;
+  			createMediaComponent(filename, base64String);
+  		});
+  		reader.readAsDataURL(file)
+	  }
 
   }
+
+	toDataURL(url, callback) {
+	  var xhr = new XMLHttpRequest();
+	  xhr.onload = function() {
+	    var reader = new FileReader();
+	    reader.onloadend = function() {
+	      callback(reader.result);
+	    }
+	    reader.readAsDataURL(xhr.response);
+	  };
+	  xhr.open('GET', url);
+	  xhr.responseType = 'blob';
+	  xhr.send();
+	} 
 
   allowDrop(e) {
     e.preventDefault();
@@ -58,7 +91,7 @@ class NavBar extends Component {
   }
 
 	render() {
-		const { createCMSLinkComponent, CMSLinkComponents, switchSelectedComponent, dispatch } = this.props;
+		const { createCMSLinkComponent, CMSLinkComponents, Images, switchSelectedComponent, dispatch } = this.props;
 		const CMSLinkComponentPOJOs = CMSLinkComponents.map(c => { return {name: c.name, _uid: c._uid, uid: c.uid} });
 		return (
 			<Navbar fixedTop>
@@ -74,8 +107,8 @@ class NavBar extends Component {
 			    	<form>
 			    		<input type="file" id="fileElem" multiple onDrop={ this.handleImageDrop } onDragOver={(e) => {e.preventDefault()}} />
 			    	</form>
-			    	{componentNames.map(componentName => {
-			    		return <MenuItem eventKey={3.1} draggable onDragStart={ e => { this.drag(e) }}>{componentName}</MenuItem>
+			    	{Images.map(mediaImage=> {
+			    		return <MenuItem eventKey={3.1} draggable onDragStart={ e => { this.drag(e) }}>{mediaImage.realFileName}</MenuItem>
 			    	})}
 			    </NavDropdown>
 			    
@@ -110,12 +143,19 @@ const mapStateToProps = state => {
 		CMSLinkComponents: Object.values(_.pickBy(state.components, (value, key) => {
 			return value._type === 'CMSLinkComponent';
 		})),
+		Images: Object.values(_.pickBy(state.components, (value, key) => {
+			return value._type === 'MediaComponent';
+		})),
 		state 
 	}
 }
 
 const mapDispatchToProps = dispatch => {
-	return { dispatch }
+	return { 
+		createMediaComponent: (filename, base64String) => {
+			dispatch(createMediaComponent(filename, base64String));
+		}
+	}
 }
 
 const MutatedNavBarComponent = HOCBaseComponent(NavBar);

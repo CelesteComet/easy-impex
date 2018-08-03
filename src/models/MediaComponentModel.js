@@ -1,11 +1,12 @@
 class MediaComponentModel {
 	constructor() {
-		this._uid 						= "UID name";
-		this.code             = "UID name";
 		this._type						= "MediaComponent";
+		this._uid 						= "UID name";
 		this.code             = "name";
-		this.realFileName     = "Link Name";
-		this.url 							= "/sagan-collection";
+		this.mime             = "image/jpeg";
+		this.realFileName     = "image.jpg";
+		this["@media"] 				= "image.jpg";
+		this.base64String			= undefined;
 	}
 }
 

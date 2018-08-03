@@ -1,19 +1,27 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
-
 import HeroComponent from './HeroComponent';
+import { createHeroComponent } from '../actions/componentActions';
+import { showModal } from '../actions/editorActions';
 
 class HeroWrapperComponent extends Component {
 	constructor(props) {
 		super(props);
+		this.createHero = this.createHero.bind(this);
+	}
+
+	createHero() {
+
 	}
 
 	render() {
 		const {
 			heroComponentUIDs, // array
 			renderType, // string
-			allComponents // object
+			allComponents,
+			createHeroComponent // object
 		} = this.props;
+
 		if (renderType === 'SINGLE') {
 			const heroModel = allComponents[heroComponentUIDs[0]];
 			return (
@@ -41,8 +49,8 @@ class HeroWrapperComponent extends Component {
 		}
 
 		return (
-			<div>
-				Drop some heroes 
+			<div> 
+				<button onClick={ createHeroComponent }>ADD HERO COMPONENT</button>
 			</div>
 		);		
 
@@ -60,8 +68,20 @@ const mapStateToProps = state => {
 	}
 }
 
+const createComponent = (componentActionFunction, dispatch) => {
+  const action = componentActionFunction();
+  const { type, payload } = action;
+  const { _uid }  = payload;
+  dispatch(action);
+  dispatch(showModal({_uid}));
+};
+
 const mapDispatchToProps = dispatch => {
-	return { dispatch }
+  return {
+    createHeroComponent: () => {
+      createComponent(createHeroComponent, dispatch);
+    }
+  };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(HeroWrapperComponent);
