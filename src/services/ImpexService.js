@@ -2,7 +2,8 @@ const componentTitles = {
 	StoryTextComponent: "INSERT_UPDATE StoryTextComponent; $contentCV[unique = true]; uid[unique = true]    ; title; primaryCTA(uid, $contentCV); subtitle; paragraph",
 	CMSLinkComponent: "INSERT_UPDATE CMSLinkComponent; $contentCV[unique = true]; uid[unique = true]       ; name                     ; linkName              ; url                            ; target(code)[default = 'sameWindow']",
 	HeroComponent: "INSERT_UPDATE HeroComponent; $contentCV[unique = true]; uid[unique = true]; hPosition(code); name            ; title                   ; subtitle                  ; image(code, $contentCV); mobileImage(code, $contentCV); textStyle(code); videoLinkRenderType(code); primaryCTALink(uid, $contentCV); secondaryLink(uid, $contentCV); VideoCTALink(uid, $contentCV); text",
-	MediaComponent: "INSERT_UPDATE Media; $contentCV[unique = true]; code[unique = true] ; mime      ; realFileName                                            ; @media[translator = de.hybris.platform.impex.jalo.media.MediaDataTranslator][forceWrite = true]; folder(qualifier)[default = 'images']"
+	MediaComponent: "INSERT_UPDATE Media; $contentCV[unique = true]; code[unique = true] ; mime      ; realFileName                                            ; @media[translator = de.hybris.platform.impex.jalo.media.MediaDataTranslator][forceWrite = true]; folder(qualifier)[default = 'images']",
+	HeroSplitComponent: "INSERT_UPDATE HeroSplitComponent; $contentCV[unique = true]; uid[unique = true]        ; title       ; subtitle; backgroundHexColor; textStyle(code); imagePosition(code); image(code, $contentCV); VideoCTALink(uid, $contentCV); displayStyle(code)[default = 'SINGLE']; text"
 }
 
 
@@ -50,7 +51,7 @@ function ImpexService(state) {
 
 
 		// add the shit
-		sortedComponentsHash[componentType].forEach(componentData => {
+		sortedComponentsHash[componentType].forEach((componentData, idx) => {
 			// got through all the necessary properties and key the shit out of the data
 			let componentString = "";
 			necessaryProperties.forEach(prop => {
@@ -60,13 +61,17 @@ function ImpexService(state) {
 					return;	
 				} 
 
+
 				// if the key value is undefined
 				if (componentData[prop] === undefined) {
 					componentString += ";";
 				} else {
-					componentString += (componentData[prop] + ";");
+					if (prop === 'code') {
+						componentString += (componentData[prop] + idx + ";");
+					} else {
+						componentString += (componentData[prop] + ";");
+					}
 				}
-
 			});
 
 

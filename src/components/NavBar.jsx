@@ -3,6 +3,7 @@ import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
 import GenerateImpexButton from './GenerateImpexButton';
 import _ from 'lodash';
 import { connect } from 'react-redux';
+import { Field, reduxForm } from 'redux-form'
 
 // components 
 import HOCBaseComponent from './HOCBaseComponent'
@@ -83,15 +84,16 @@ class NavBar extends Component {
     e.preventDefault();
   }
 
-  drag(e, _uid, _type, uid)  {
+  drag(e, _uid, _type, uid, url)  {
     e.dataTransfer.setData("text", e.target.innerHTML);
     e.dataTransfer.setData("_uid", _uid);
     e.dataTransfer.setData("_type", _type);
     e.dataTransfer.setData("uid", uid);
+    e.dataTransfer.setData("url", url);
   }
 
 	render() {
-		const { createCMSLinkComponent, CMSLinkComponents, Images, switchSelectedComponent, dispatch } = this.props;
+		const { createCMSLinkComponent, CMSLinkComponents, Images, switchSelectedComponent, dispatch, state} = this.props;
 		const CMSLinkComponentPOJOs = CMSLinkComponents.map(c => { return {name: c.name, _uid: c._uid, uid: c.uid} });
 		return (
 			<Navbar fixedTop>
@@ -108,7 +110,7 @@ class NavBar extends Component {
 			    		<input type="file" id="fileElem" multiple onDrop={ this.handleImageDrop } onDragOver={(e) => {e.preventDefault()}} />
 			    	</form>
 			    	{Images.map(mediaImage=> {
-			    		return <MenuItem eventKey={3.1} draggable onDragStart={ e => { this.drag(e) }}>{mediaImage.realFileName}</MenuItem>
+			    		return <MenuItem eventKey={3.1} draggable onDragStart={ e => { this.drag(e, mediaImage._uid) }}>{mediaImage.realFileName}</MenuItem>
 			    	})}
 			    </NavDropdown>
 			    
@@ -125,18 +127,28 @@ class NavBar extends Component {
 			    		return (
 			    		<MenuItem 
 			    			draggable 
-			    			onDragStart={ e => {this.drag(e, CMSLinkComponentPOJO._uid, CMSLinkComponentPOJO._type, CMSLinkComponentPOJO.uid) }} 
+			    			onDragStart={ e => {this.drag(e, CMSLinkComponentPOJO._uid, CMSLinkComponentPOJO._type, CMSLinkComponentPOJO.uid, CMSLinkComponentPOJO.url) }} 
 			    			onClick={(dispatch) => {switchSelectedComponent(CMSLinkComponentPOJO._uid)}} 
 			    			data-uid={ CMSLinkComponentPOJO._uid }>{CMSLinkComponentPOJO.name}</MenuItem> 
 			    		)
 			    	})}
 			    </NavDropdown>			    
 			    <GenerateImpexButton />
+	          <Field
+	            name="prefix"
+	            component="input"
+	            type="text"
+	            placeholder="Prefix"
+	          />			    
 			  </Nav>
 			</Navbar>
 		);
 	}
 }
+
+const formWrappedNavBar = reduxForm({
+	form: 'simple'
+})(NavBar);
 
 const mapStateToProps = state => {
 	return { 
@@ -158,7 +170,7 @@ const mapDispatchToProps = dispatch => {
 	}
 }
 
-const MutatedNavBarComponent = HOCBaseComponent(NavBar);
+const MutatedNavBarComponent = HOCBaseComponent(formWrappedNavBar);
 
 export default connect(mapStateToProps, mapDispatchToProps)(MutatedNavBarComponent);
 

@@ -1,6 +1,6 @@
 class HeroComponentModel {
 	constructor() {
-		this._uid 							= "UID name";
+		this._uid 						= "UID name";
 		this._type						= "HeroComponent";
 		this.name  						= "CMS name";
 		this.hPosition 				= "LEFT";

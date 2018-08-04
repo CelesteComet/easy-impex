@@ -12,6 +12,19 @@ import { changeComponentField } from '../actions/componentActions';
 class HeroSplitComponent extends Component {
 	constructor(props) {
 		super(props);
+		this.handleImageDrop = this.handleImageDrop.bind(this);
+	}
+
+	handleImageDrop(e) {
+		e.stopPropagation();
+		e.preventDefault();
+		const imageUID= e.dataTransfer.getData("_uid");
+		const heroSplitUID = e.target.getAttribute("data-uid");
+		const { allComponents, changeComponentField }= this.props;
+		const imageComponent = allComponents[imageUID];
+		const value = imageComponent.base64String;
+		const payload = {_uid: heroSplitUID, key: "imageUrl", value}
+		changeComponentField(payload);		
 	}
 
 	render() {
@@ -39,6 +52,7 @@ class HeroSplitComponent extends Component {
 		let imageDiv;
 		let copy;
 		let textColor;
+		let ctaDisplayClass;
 
 		if (textAlignment === "CENTER") {
 			textAlignment = "text-align-center";
@@ -57,9 +71,9 @@ class HeroSplitComponent extends Component {
 
 		if (displayStyle === "SINGLE") {
 			if (mobileImage) {
-				imageDiv = <div className="c-herosplit__image" data-mobileImage={mobileImage} data-desktopImage={imageUrl}></div>
+				imageDiv = <div data-uid={ _uid } onDrop={ this.handleImageDrop } className="c-herosplit__image" data-mobileImage={mobileImage} data-desktopImage={imageUrl}></div>
 			} else {
-				imageDiv = <div className="c-herosplit__image" style={{backgroundImage: `url(${imageUrl})`}}></div>
+				imageDiv = <div data-uid={ _uid } onDrop={ this.handleImageDrop } className="c-herosplit__image" style={{backgroundImage: `url(${imageUrl})`}}></div>
 			}
 		}
 
@@ -71,9 +85,9 @@ class HeroSplitComponent extends Component {
 
 		{/* CTA Display Style */}
 		if (ctaDisplayType === "Button") {
-			ctaDisplayType = "c-herosplit__button";
+			ctaDisplayClass = "c-herosplit__button";
 		} else {
-			ctaDisplayType = "c-herosplit__link";
+			ctaDisplayClass = "c-herosplit__link";
 		}
 
 		{/* Text Color Style */}
@@ -108,9 +122,9 @@ class HeroSplitComponent extends Component {
 							)}
 
 							{ textCTA && (
-								<div className={`${ctaStyle}`}>
+								<div className={`${ctaDisplayClass}`}>
 									<div>
-										<a href={`${textCTA}`}></a>
+										<a href={`${textCTA}`}>{textCTA}</a>
 									</div>
 								</div>
 							)}												
@@ -135,6 +149,7 @@ class HeroSplitComponent extends Component {
 
 const mapStateToProps = state => {
 	return {
+		allComponents: state.components,
 		state
 	};
 }

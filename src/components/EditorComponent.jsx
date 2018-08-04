@@ -66,7 +66,6 @@ class EditorComponent extends Component {
 	handleCTADrop(_uid, key, value) {
 		const { changeComponentField } = this.props;
 		const payload = {_uid, key, value};
-		console.log("HANDLING A DROP")
 		changeComponentField(payload);
 	}
 
@@ -102,6 +101,11 @@ class EditorComponent extends Component {
 						<div className='_container'>
 							<ul>
 								{ Object.keys(currentComponentModel).map((key, i) => {
+									// dont render image URL, too freaking big since its a base64
+									if (key === 'imageUrl') {
+										return;
+									}
+									// consider CTA droppables
 									if (key.match('CTA')) {
 										return (
 											<li key={i}>
@@ -114,14 +118,16 @@ class EditorComponent extends Component {
 														onDrop={(e) => {
 															e.stopPropagation();
 															const uniqueName = e.dataTransfer.getData("uid");
+															const href = e.dataTransfer.getData("href");
 															e.target.value = uniqueName;
+															e.target.href = href;
 															this.handleCTADrop(_uid, key, uniqueName);
 														}} />	
 											</li>												
 										);
-									}									
+									}
+
 									return (
-										// consider CTA droppables
 										<li key={i}>
 											<label>{key}</label>
 												<input 

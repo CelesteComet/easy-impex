@@ -6,10 +6,14 @@ import registerServiceWorker from './registerServiceWorker';
 
 // Redux stuff
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import rootReducer from './reducers';
 
-const store = createStore(rootReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+// Middleware
+import prefixAttacher from './middleware/prefixAttacher';
+
+const middleware = applyMiddleware(prefixAttacher);
+const store = createStore(rootReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(), middleware);
 
 ReactDOM.render(
 	<Provider store={ store }>
