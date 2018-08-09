@@ -6,7 +6,6 @@ import './css/specialized.css';
 import './css/editor.css';
 import './App.css';
 
-
 import { connect } from 'react-redux';
 
 // actions
